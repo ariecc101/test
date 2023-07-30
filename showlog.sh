@@ -3,10 +3,10 @@ Help()
 {
    # Display Help
    echo_with_color "$GREEN_BOLD" "RUN"
-   echo_with_color "$GREEN_BOLD" "deploy.sh dir-of-service name-branch"
+   echo_with_color "$GREEN_BOLD" "showlog.sh dir-of-service"
    echo_with_color "$GREEN_BOLD"
    echo_with_color "$GREEN_BOLD" "EXAMPLE"
-   echo_with_color "$GREEN_BOLD" "deploy.sh /home/go-hello-world main"
+   echo_with_color "$GREEN_BOLD" "showlog.sh /home/go-hello-world"
 }
 
 GREEN_BOLD='\033[1;32m'
