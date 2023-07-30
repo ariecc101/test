@@ -3,10 +3,10 @@ Help()
 {
    # Display Help
    echo "RUN"
-   echo "deploy.sh dir-of-service"
+   echo "deploy.sh dir-of-service name-branch"
    echo 
    echo "EXAMPLE"
-   echo "deploy.sh /home/go-hello-world"
+   echo "deploy.sh /home/go-hello-world main"
 }
 
 while getopts ":h" option; do
@@ -20,7 +20,9 @@ while getopts ":h" option; do
    esac
 done
 
-if [ -z "$1" ]; then
+NAME_BRANCH=$2
+
+if [ -z "$1" ] || [ -z "$2" ]; then
     echo "No arguments supplied"
     exit 1
 fi
@@ -35,7 +37,13 @@ if [ ! -d $1 ]; then
 fi
 
 cd $DIR_SERVICE
-git fetch --all && git pull origin trunk
+
+if [ ! `git branch --list $NAME_BRANCH` ] ; then
+   echo "Branch name $NAME_BRANCH doesnt exists."
+   exit 1
+fi
+
+git fetch --all && git pull origin $NAME_BRANCH
 go mod download && go mod tidy
 go build -o $NAME
 systemctl restart $NAME
