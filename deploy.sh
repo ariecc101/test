@@ -25,8 +25,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
+
 DIR_SERVICE=$1
 NAME=$(basename $DIR_SERVICE)
+
+if [ ! -d $NAME ]; then
+    echo "Directory $NAME doesnt exist"
+    exit 1
+fi
 
 cd $DIR_SERVICE
 git fetch --all && git pull origin trunk
