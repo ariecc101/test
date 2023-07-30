@@ -38,7 +38,7 @@ fi
 
 cd $DIR_SERVICE
 
-if [ ! `git branch --list $NAME_BRANCH` ] ; then
+if ! git rev-parse --verify "$NAME_BRANCH" >/dev/null 2>&1 ; then
    echo "Branch name $NAME_BRANCH doesnt exists."
    exit 1
 fi
