@@ -29,7 +29,7 @@ fi
 DIR_SERVICE=$1
 NAME=$(basename $DIR_SERVICE)
 
-if [ ! -d $NAME ]; then
+if [ ! -d $1 ]; then
     echo "Directory $NAME doesnt exist"
     exit 1
 fi
@@ -39,4 +39,5 @@ git fetch --all && git pull origin trunk
 go mod download && go mod tidy
 go build -o $NAME
 systemctl restart $NAME
+echo "Successfully Deploy Service $NAME"
 # systemctl status $NAME
