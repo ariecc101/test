@@ -3,11 +3,21 @@
 Help()
 {
    # Display Help
-   echo "RUN"
-   echo "1_set-env-and-system.sh dir-of-service"
-   echo 
-   echo "EXAMPLE"
-   echo "1_set-env-and-system.sh /home/go-hello-world"
+   echo_with_color "$GREEN_BOLD" "RUN"
+   echo_with_color "$GREEN_BOLD" "1_set-env-and-system.sh dir-of-service"
+   echo_with_color "$GREEN_BOLD" 
+   echo_with_color "$GREEN_BOLD" "EXAMPLE"
+   echo_with_color "$GREEN_BOLD" "1_set-env-and-system.sh /home/go-hello-world"
+}
+
+GREEN_BOLD='\033[1;32m'
+RED_BOLD='\033[1;31m'
+RESET_COLOR='\033[0m'
+
+function echo_with_color {
+    local color="$1"
+    local message="$2"
+    echo -e "${color} ${message}${RESET_COLOR}"
 }
 
 while getopts ":h" option; do
@@ -16,7 +26,7 @@ while getopts ":h" option; do
          Help
          exit;;
      \?) # incorrect option
-         echo "Error: Invalid option"
+         echo_with_color "$RED_BOLD" "Error: Invalid option"
          exit;;
    esac
 done
@@ -26,15 +36,17 @@ NAME=$(basename $DEST_DIR_SERVICE)
 BASE_ENV=$DEST_DIR_SERVICE.env
 CURRENT_DIR=`pwd`
 
-if [ ! -f "$BASE_ENV" ]; then
-    echo "Directory $BASE_ENV doesnt exist"
+if [ -z "$1" ]; then
+    echo_with_color "$RED_BOLD" "No arguments supplied"
     exit 1
 fi
 
-if [ -z "$1" ]; then
-    echo "No arguments supplied"
+if [ ! -f "$BASE_ENV" ]; then
+    echo_with_color "$RED_BOLD" "File $BASE_ENV doesnt exist"
+    echo_with_color "$RED_BOLD" "First, set .env in $DEST_DIR_SERVICE"
     exit 1
 fi
+
 
 cd $DEST_DIR_SERVICE
 cp $BASE_ENV $DEST_DIR_SERVICE

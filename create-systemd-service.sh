@@ -3,11 +3,21 @@
 Help()
 {
    # Display Help
-   echo "RUN"
-   echo "create-systemd-service.sh service-name dir-of-service"
-   echo 
-   echo "EXAMPLE"
-   echo "create-systemd-service.sh go-hello-world /home/go-hello-world"
+   echo_with_color "$GREEN_BOLD" "RUN"
+   echo_with_color "$GREEN_BOLD" "create-systemd-service.sh service-name dir-of-service"
+   echo_with_color "$GREEN_BOLD" 
+   echo_with_color "$GREEN_BOLD" "EXAMPLE"
+   echo_with_color "$GREEN_BOLD" "create-systemd-service.sh go-hello-world /home/go-hello-world"
+}
+
+GREEN_BOLD='\033[1;32m'
+RED_BOLD='\033[1;31m'
+RESET_COLOR='\033[0m'
+
+function echo_with_color {
+    local color="$1"
+    local message="$2"
+    echo -e "${color} ${message}${RESET_COLOR}"
 }
 
 while getopts ":h" option; do
@@ -16,7 +26,7 @@ while getopts ":h" option; do
          Help
          exit;;
      \?) # incorrect option
-         echo "Error: Invalid option"
+         echo_with_color "$RED_BOLD" "Error: Invalid option"
          exit;;
    esac
 done
@@ -34,7 +44,7 @@ SERVICE_DIR=$2
 TEMP=$BASEDIR/service-temp
 
 if [ -z "$1" ] || [ -z "$2" ]; then
-    echo "No arguments supplied"
+    echo_with_color "$RED_BOLD" "No arguments supplied"
     exit 1
 fi
 
@@ -43,7 +53,7 @@ if [ ! -d "$BASEDIR" ]; then
 fi
 
 if [ ! -d "$SERVICE_DIR" ]; then
-    echo "Wrong Service Directory $SERVICE_DIR"
+    echo_with_color "$RED_BOLD" "Wrong Service Directory $SERVICE_DIR"
     exit 1
 fi
 
@@ -65,5 +75,5 @@ cp $TEMP/$NAME.service $DEST/$NAME.service
 systemctl daemon-reload
 systemctl enable --now $NAME
 
-echo "Created Successfully Systemd Service $NAME"
+echo_with_color "$GREEN_BOLD" "Created Successfully Systemd Service $NAME"
 # systemctl status $NAME
